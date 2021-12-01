@@ -23,6 +23,9 @@ class CommentForm extends Component {
     super(props);
     this.state = {
       showModel: false,
+      touched: {
+        author: false,
+      },
     };
   }
   handleToggle = () => {
@@ -43,13 +46,13 @@ class CommentForm extends Component {
         <Modal isOpen={this.state.showModel} toggle={this.handleToggle}>
           <ModalHeader>Submit Comment</ModalHeader>
           <ModalBody>
-            <LocalForm>
+            <LocalForm onSubmit={(values) => this.handleSubmit(values)}>
               <div className="form-group">
                 <label htmlFor="rating">Rating</label>
                 <Control.select
                   name="rating"
                   model=".rating"
-                  className="col-12">
+                  className="col-12 form-control">
                   <option value="1">1</option>
                   <option value="2">2</option>
                   <option value="3">3</option>
@@ -62,7 +65,7 @@ class CommentForm extends Component {
                 <Control.text
                   name="author"
                   model=".author"
-                  className="col-12"
+                  className="col-12 form-control"
                   validators={{
                     minLength: minLength(2),
                     maxLength: maxLength(15),
@@ -72,6 +75,7 @@ class CommentForm extends Component {
                   model=".author"
                   className="text-danger"
                   component="div"
+                  show="touched"
                   messages={{
                     maxLength: "Must be 15 characters or less",
                     minLength: "Must be at least 2 characters",
@@ -84,7 +88,7 @@ class CommentForm extends Component {
                   rows="6"
                   name="text"
                   model=".text"
-                  className="col-12"
+                  className="col-12 form-control"
                 />
               </div>
               <Button type="submit" color="primary">
