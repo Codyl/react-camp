@@ -22,7 +22,7 @@ class CommentForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      showModel: false,
+      showModal: false,
       touched: {
         author: false,
       },
@@ -30,11 +30,18 @@ class CommentForm extends Component {
   }
   handleToggle = () => {
     this.setState({
-      showModel: !this.state.showModel,
+      showModal: !this.state.showModal,
     });
   };
   handleSubmit = (values) => {
-    alert(values);
+    console.log(values, this.props.campsiteId);
+    this.handleToggle();
+    this.props.addComment(
+      this.props.campsiteId,
+      values.rating,
+      values.author,
+      values.text
+    );
   };
   render() {
     return (
@@ -43,7 +50,7 @@ class CommentForm extends Component {
           <i className="fa fa-pencil fa-lg" />
           Submit Comment
         </Button>
-        <Modal isOpen={this.state.showModel} toggle={this.handleToggle}>
+        <Modal isOpen={this.state.showModal} toggle={this.handleToggle}>
           <ModalHeader>Submit Comment</ModalHeader>
           <ModalBody>
             <LocalForm onSubmit={(values) => this.handleSubmit(values)}>
@@ -114,7 +121,7 @@ function RenderCampsite({ campsite }) {
     </div>
   );
 }
-function RenderComments({ comments }) {
+function RenderComments({ comments, addComment, campsiteId }) {
   if (comments) {
     return (
       <div className="col-md-5 m-1">
@@ -124,7 +131,7 @@ function RenderComments({ comments }) {
             <div key={comment.id}>
               <p>{comment.text}</p>
               <p>
-                --{comment.author}
+                --{comment.author}{" "}
                 {new Intl.DateTimeFormat("en-US", {
                   year: "numeric",
                   month: "short",
@@ -134,7 +141,7 @@ function RenderComments({ comments }) {
             </div>
           );
         })}
-        <CommentForm />
+        <CommentForm campsiteId={campsiteId} addComment={addComment} />
       </div>
     );
   }
@@ -153,13 +160,19 @@ function CampsiteInfo(props) {
               </BreadcrumbItem>
               <BreadcrumbItem active>{props.campsite.name}</BreadcrumbItem>
             </Breadcrumb>
-            <h2>{props.campsite.name}</h2>
+            <h2>
+              {props.campsite.name}
+            </h2>
             <hr />
           </div>
         </div>
         <div className="row">
           <RenderCampsite campsite={props.campsite} />
-          <RenderComments comments={props.comments} />
+          <RenderComments
+            comments={props.comments}
+            addComment={props.addComment}
+            campsiteId={props.campsite.id}
+          />
         </div>
       </div>
     );
