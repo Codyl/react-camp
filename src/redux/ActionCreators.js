@@ -118,15 +118,6 @@ export const postComment = (campsiteId, rating, author, text) => dispatch => {
   })
 };
   
-//   (campsiteId, rating, author, text) => ({
-//   type: ActionTypes.ADD_COMMENT,
-//   payload: {
-//     campsiteId: campsiteId,
-//     rating: rating,
-//     author: author,
-//     text: text,
-//   },
-// });
 
 export const fetchPromotions = () => dispatch => {
   dispatch(promotionsLoading());
