@@ -159,4 +159,3 @@ export const addPromotions = promotions => ({
   type: ActionTypes.ADD_PROMOTIONS,
   payload: promotions
 });
-//tests
